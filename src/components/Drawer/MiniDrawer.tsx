@@ -18,6 +18,7 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import Layout from "../Layout/Layout";
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
@@ -144,7 +145,7 @@ export default function MiniDrawer() {
             <Link key={text} to={text.toLowerCase()}>
               <ListItem button>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {index % 2 === 0 ? <InboxIcon /> : <DriveFileRenameOutlineIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>

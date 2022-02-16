@@ -2,6 +2,12 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Prerequisites
+
+Please include a .env file in root folder with related fields
+
+REACT_APP_API_URL => Base url of your API
+
 ## Available Scripts
 
 In the project directory, you can run:
