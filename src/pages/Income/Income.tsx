@@ -3,10 +3,10 @@ import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState, ChangeEvent } from "react";
 import { getIncomeData, postIncomeData } from "../../services/income.service";
-import { ICol } from "../../types/Income"
+import { ICol, IRow } from "../../types/Income"
 
 export default function Income() {
-  const [incomeData, setIncomeData] = useState<any>([]);
+  const [incomeData, setIncomeData] = useState<IRow[]>([]);
   const [open, setOpen] = useState(false);
   const [createIncomeData, setCreateIncomeData] = useState({
     name: "",
