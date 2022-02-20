@@ -6,6 +6,13 @@ export type IRow = {
   date?: string;
 };
 
+export type IRowData = {
+  _id: string;
+  name: string;
+  amount: number;
+  date?: string;
+};
+
 export type ICol = {
   field: string;
   headerName: string;

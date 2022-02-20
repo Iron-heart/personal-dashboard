@@ -3,78 +3,66 @@ import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState, ChangeEvent } from "react";
 import { getIncomeData, postIncomeData } from "../../services/income.service";
-import { ICol, IRow } from "../../types/Income"
+import { ICol, IRow, IRowData } from "../../types/Income";
 
 export default function Income() {
   const [incomeData, setIncomeData] = useState<IRow[]>([]);
   const [open, setOpen] = useState(false);
   const [createIncomeData, setCreateIncomeData] = useState({
     name: "",
-    amount: ""
-  })
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
+    amount: "",
+  });
 
   const handleTextFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCreateIncomeData({
       ...createIncomeData,
-      [event.target.name]: event.target.value
-    })
-  }
+      [event.target.name]: event.target.value,
+    });
+  };
 
   const handleOpen = () => setOpen(true);
 
   const handleClose = () => {
-    setOpen(false)
+    setOpen(false);
     setCreateIncomeData({
       name: "",
-      amount: ""
-    })
+      amount: "",
+    });
   };
 
-  // TODO Implement Normalize Method
-  // const normalizeData = (data: IRow[]) => {
-  //   data.map((item, i) => {
-  //     return {
-  //       id: i + 1,
-  //       name: item.name,
-  //       date: item.date ? new Date(item.date).toDateString() : "",
-  //       amount: item.amount,
-  //       _id: item._id,
-  //     }
-  //   })
-  // }
+  const normalizeData = (data: IRowData[]): IRow[] => {
+    return data.map((item, i) => {
+      return {
+        id: i + 1,
+        name: item.name,
+        date: item.date ? new Date(item.date).toDateString() : "",
+        amount: item.amount,
+        _id: item._id,
+      };
+    });
+  };
 
   const fetchData = () => {
-    return getIncomeData().then(response => {
-      return response.data.map((item, i) => {
-        return {
-          id: i + 1,
-          name: item.name,
-          date: item.date ? new Date(item.date).toDateString() : "",
-          amount: item.amount,
-          _id: item._id,
-        }
+    return getIncomeData()
+      .then((response) => {
+        return normalizeData(response.data);
       })
-    }).then(data => setIncomeData(data))
-  }
+      .then((data) => setIncomeData(data));
+  };
 
   const handleSubmit = () => {
-    const { name, amount } = createIncomeData
+    const { name, amount } = createIncomeData;
 
     const data = {
       name,
-      amount: Number(amount)
-    }
+      amount: Number(amount),
+    };
 
     postIncomeData(data).then(() => {
-      fetchData()
-      handleClose()
-    })
-  }
+      fetchData();
+      handleClose();
+    });
+  };
 
   const style = {
     position: "absolute" as "absolute",
@@ -95,7 +83,9 @@ export default function Income() {
     { field: "date", headerName: "Date", width: 220 },
   ];
 
-  console.log(createIncomeData)
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return (
     <>
@@ -151,15 +141,15 @@ export default function Income() {
                 name="amount"
               />
             </Box>
-            <Button onClick={handleSubmit} variant="contained">Gönder</Button>
+            <Button onClick={handleSubmit} variant="contained">
+              Gönder
+            </Button>
           </Box>
         </Modal>
       </Box>
 
       <div style={{ height: 500, width: "100%" }}>
-        {
-          !!incomeData && <DataGrid rows={incomeData} columns={columns} />
-        }
+        {!!incomeData && <DataGrid rows={incomeData} columns={columns} />}
       </div>
     </>
   );
