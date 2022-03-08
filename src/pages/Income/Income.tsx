@@ -1,7 +1,7 @@
 import { Button, Modal, Typography, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
-import { useEffect, useState, ChangeEvent } from "react";
+import { useEffect, useState, ChangeEvent, useCallback } from "react";
 import { getIncomeData, postIncomeData } from "../../services/income.service";
 import { ICol, IRow, IRowData } from "../../types/Income";
 
@@ -42,13 +42,13 @@ export default function Income() {
     });
   };
 
-  const fetchData = () => {
+  const fetchData = useCallback(() => {
     return getIncomeData()
       .then((response) => {
         return normalizeData(response.data);
       })
       .then((data) => setIncomeData(data));
-  };
+  }, [])
 
   const handleSubmit = () => {
     const { name, amount } = createIncomeData;
@@ -84,6 +84,7 @@ export default function Income() {
   ];
 
   useEffect(() => {
+
     fetchData();
   }, [fetchData]);
 
@@ -149,7 +150,7 @@ export default function Income() {
       </Box>
 
       <div style={{ height: 500, width: "100%" }}>
-        {!!incomeData && <DataGrid rows={incomeData} columns={columns} />}
+        {incomeData && <DataGrid onRowDoubleClick={(e) => console.log(e.row)} checkboxSelection autoHeight rows={incomeData} columns={columns} />}
       </div>
     </>
   );
