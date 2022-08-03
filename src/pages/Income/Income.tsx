@@ -149,7 +149,7 @@ export default function Income() {
                 onChange={formik.handleChange}
                 error={formik.touched.amount && Boolean(formik.errors.amount)}
                 helperText={formik.touched.amount && formik.errors.amount}
-                sx={{ my: 1, minHeight: 80 }}
+                sx={{ mb: 1, minHeight: 80 }}
               />
               <Button color="primary" variant="contained" fullWidth type="submit">
                 Submit
