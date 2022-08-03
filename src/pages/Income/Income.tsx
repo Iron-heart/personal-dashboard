@@ -4,30 +4,43 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState, ChangeEvent, useCallback } from "react";
 import { getIncomeData, postIncomeData } from "../../services/income.service";
 import { ICol, IRow, IRowData } from "../../types/Income";
+import * as yup from 'yup';
+import { useFormik } from "formik";
+
+const validationSchema = yup.object({
+  title: yup
+    .string()
+    .required('Please enter a title for entry'),
+  amount: yup
+    .string()
+    .required('Please enter an amount for entry')
+});
 
 export default function Income() {
   const [incomeData, setIncomeData] = useState<IRow[]>([]);
   const [open, setOpen] = useState(false);
-  const [createIncomeData, setCreateIncomeData] = useState({
-    name: "",
-    amount: "",
+
+
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+      amount: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
   });
 
-  const handleTextFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCreateIncomeData({
-      ...createIncomeData,
-      [event.target.name]: event.target.value,
-    });
-  };
+
+
 
   const handleOpen = () => setOpen(true);
 
+
+
   const handleClose = () => {
     setOpen(false);
-    setCreateIncomeData({
-      name: "",
-      amount: "",
-    });
   };
 
   const normalizeData = (data: IRowData[]): IRow[] => {
@@ -50,19 +63,19 @@ export default function Income() {
       .then((data) => setIncomeData(data));
   }, [])
 
-  const handleSubmit = () => {
-    const { name, amount } = createIncomeData;
+  // const handleSubmit = () => {
+  //   const { name, amount } = createIncomeData;
 
-    const data = {
-      name,
-      amount: Number(amount),
-    };
+  //   const data = {
+  //     name,
+  //     amount: Number(amount),
+  //   };
 
-    postIncomeData(data).then(() => {
-      fetchData();
-      handleClose();
-    });
-  };
+  //   postIncomeData(data).then(() => {
+  //     fetchData();
+  //     handleClose();
+  //   });
+  // };
 
   const style = {
     position: "absolute" as "absolute",
@@ -112,39 +125,36 @@ export default function Income() {
             <Typography id="modal-modal-title" variant="h6" component="h2">
               New Income
             </Typography>
-            <Box
-              component="form"
-              sx={{
-                "& > :not(style)": {
-                  m: 1,
-                  width: "25ch",
-                },
-                display: "flex",
-              }}
-              noValidate
-              autoComplete="off"
-            >
+
+            <form onSubmit={formik.handleSubmit}>
               <TextField
-                onChange={handleTextFieldChange}
-                id="outlined-basic"
+                fullWidth
+                id="title"
+                name="title"
                 label="Title"
-                variant="outlined"
                 type="text"
-                value={createIncomeData.name}
-                name="name"
+                value={formik.values.title}
+                onChange={formik.handleChange}
+                error={formik.touched.title && Boolean(formik.errors.title)}
+                helperText={formik.touched.title && formik.errors.title}
+                sx={{ my: 1, minHeight: 80 }}
               />
               <TextField
-                onChange={handleTextFieldChange}
-                id="outlined-basic"
-                label="Amount"
-                variant="outlined"
-                value={createIncomeData.amount}
+                fullWidth
+                id="amount"
                 name="amount"
+                label="Amount"
+                type="text"
+                value={formik.values.amount}
+                onChange={formik.handleChange}
+                error={formik.touched.amount && Boolean(formik.errors.amount)}
+                helperText={formik.touched.amount && formik.errors.amount}
+                sx={{ my: 1, minHeight: 80 }}
               />
-            </Box>
-            <Button onClick={handleSubmit} variant="contained">
-              Gönder
-            </Button>
+              <Button color="primary" variant="contained" fullWidth type="submit">
+                Submit
+              </Button>
+            </form>
           </Box>
         </Modal>
       </Box>
