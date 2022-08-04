@@ -152,7 +152,7 @@ export default function Income() {
       </Box>
 
       <div style={{ height: 500, width: "100%" }}>
-        {incomeData && <DataGrid onRowDoubleClick={(e) => console.log(e.row)} checkboxSelection autoHeight rows={incomeData} columns={columns} />}
+        {incomeData && <DataGrid onRowDoubleClick={(e) => alert(JSON.stringify(e.row, null, 2))} checkboxSelection autoHeight rows={incomeData} columns={columns} />}
       </div>
     </>
   );
