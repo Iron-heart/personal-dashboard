@@ -1,7 +1,7 @@
 import { Button, Modal, Typography, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
-import { useEffect, useState, ChangeEvent, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getIncomeData, postIncomeData } from "../../services/income.service";
 import { ICol, IRow, IRowData } from "../../types/Income";
 import * as yup from 'yup';
@@ -13,6 +13,7 @@ const validationSchema = yup.object({
     .required('Please enter a title for entry'),
   amount: yup
     .string()
+    .matches(/^[0-9]+$/, "Must be only digits")
     .required('Please enter an amount for entry')
 });
 
@@ -28,7 +29,10 @@ export default function Income() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      postIncomeData(values).then(() => {
+        fetchData();
+        handleClose();
+      });
     },
   });
 
@@ -47,7 +51,7 @@ export default function Income() {
     return data.map((item, i) => {
       return {
         id: i + 1,
-        name: item.name,
+        title: item.title,
         date: item.date ? new Date(item.date).toDateString() : "",
         amount: item.amount,
         _id: item._id,
@@ -63,19 +67,7 @@ export default function Income() {
       .then((data) => setIncomeData(data));
   }, [])
 
-  // const handleSubmit = () => {
-  //   const { name, amount } = createIncomeData;
 
-  //   const data = {
-  //     name,
-  //     amount: Number(amount),
-  //   };
-
-  //   postIncomeData(data).then(() => {
-  //     fetchData();
-  //     handleClose();
-  //   });
-  // };
 
   const style = {
     position: "absolute" as "absolute",
@@ -91,7 +83,7 @@ export default function Income() {
 
   const columns: ICol[] = [
     { field: "_id", headerName: "Id", width: 150 },
-    { field: "name", headerName: "Name", width: 150 },
+    { field: "title", headerName: "Title", width: 150 },
     { field: "amount", headerName: "Amount", width: 150 },
     { field: "date", headerName: "Date", width: 220 },
   ];

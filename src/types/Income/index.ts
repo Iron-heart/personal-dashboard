@@ -1,14 +1,14 @@
 export type IRow = {
   id: number;
   _id: string;
-  name: string;
+  title: string;
   amount: number;
   date?: string;
 };
 
 export type IRowData = {
   _id: string;
-  name: string;
+  title: string;
   amount: number;
   date?: string;
 };
@@ -20,6 +20,6 @@ export type ICol = {
 };
 
 export type IPostData = {
-  name: string;
-  amount: number;
+  title: string;
+  amount: string;
 };
