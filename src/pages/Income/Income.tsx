@@ -41,7 +41,6 @@ export default function Income() {
     setOpen(false);
   };
 
-  console.log("test run")
 
   const normalizeData = (data: IRowData[]): IRow[] => {
     return data.map((item, i) => {
