@@ -21,7 +21,6 @@ export default function Income() {
   const [incomeData, setIncomeData] = useState<IRow[]>([]);
   const [open, setOpen] = useState(false);
 
-
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -36,12 +35,7 @@ export default function Income() {
     },
   });
 
-
-
-
   const handleOpen = () => setOpen(true);
-
-
 
   const handleClose = () => {
     setOpen(false);
@@ -67,8 +61,6 @@ export default function Income() {
       .then((data) => setIncomeData(data));
   }, [])
 
-
-
   const style = {
     position: "absolute" as "absolute",
     top: "50%",
@@ -89,7 +81,6 @@ export default function Income() {
   ];
 
   useEffect(() => {
-
     fetchData();
   }, [fetchData]);
 
