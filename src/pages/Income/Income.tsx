@@ -41,6 +41,8 @@ export default function Income() {
     setOpen(false);
   };
 
+  console.log("test run")
+
   const normalizeData = (data: IRowData[]): IRow[] => {
     return data.map((item, i) => {
       return {
@@ -94,6 +96,7 @@ export default function Income() {
         }}
         mb={2}
       >
+        
         <Typography variant="h5">Income Data</Typography>
         <Button onClick={handleOpen} variant="outlined">
           New
